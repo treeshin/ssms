@@ -1,7 +1,7 @@
 # Program to calculate moving average using numpy
   
 import numpy as np
-from ssms_MVdata import ydata
+from ssms_MVdata import xdata, ydata
   
 arr = ydata
 window_size = 6
@@ -28,3 +28,7 @@ while i < len(arr):
     i += 1
   
 ydata = moving_averages
+
+
+xdata = np.array(xdata, dtype=np.float64)
+ydata = np.array(ydata, dtype=np.float64)
