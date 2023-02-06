@@ -3,12 +3,13 @@ import re
 import numpy as np
 from scipy.interpolate import interp1d
 import scipy
+import csv
 
 import matplotlib.pyplot as plt
 plt.rcParams['font.family'] = 'Times New Roman'
-plt.rcParams['font.size'] = 12
+plt.rcParams['font.size'] = 14
 
-filenames = glob.glob('MVdata_P1/MV_Cs_0*.csv') #+ glob.glob('MVdata_P1/MV_Ba_3*.csv')
+filenames = glob.glob('MVdata_P1/MV_Cs_0*.csv') + glob.glob('MVdata_P1/MV_Cs_3*.csv')
 ynew=np.zeros((len(filenames),1000)) # matrix for curves averaging
 j=0 # for ynew indexing
 
@@ -67,21 +68,26 @@ while i < len(ynew[0]):
     i+=1 # for ynew_mean indexing
 
 ## PLOT SETTINGS 
- 
-
-
-plt.xlabel('Time(sec)')
-plt.ylabel('Counts per second(cps)')
+plt.xlabel('Time (sec)')
+plt.ylabel('Counts per second (cps)')
 plt.xlim([0,7])
-plt.ylim([6000,18000])
+plt.ylim([6000,16000])
 # plt.legend()
-plt.grid(True, linestyle='--')
-plt.tick_params(direction='in')
+plt.grid(True, which='major', linestyle='--')
+plt.grid(True, which = 'minor', linestyle=':')
+plt.tick_params(which='major', direction='in')
+plt.tick_params(which='minor', direction='in')
+plt.minorticks_on()
+title_font = {
+    'fontsize': 20,
+    'fontweight': 'bold'
+    }
+plt.title('Average Curve (Cs-137, P1)', fontdict=title_font, loc='center', pad=15)
 plt.plot(xnew, ynew_mean, 'r--', linewidth=3)
-
-
-
 plt.show()
 
 ## Print average curve values
-print(*ynew_mean)
+output = 'output.csv'
+with open(output,'w') as f:
+    writer = csv.writer(f)
+    csv.writer(f, delimiter='\n').writerow(ynew_mean)
